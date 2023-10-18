@@ -1,23 +1,31 @@
-import { useRef } from 'react';
+import { forwardRef, useId } from 'react';
 
 type FormProps = Omit<React.FormHTMLAttributes<HTMLFormElement>, 'onSubmit'> & {
-  id: string;
+  id?: string;
   onSubmit: () => void;
+  propogateSubmit?: boolean;
 };
 
-const Form = ({ onSubmit, id, children, ...props }: FormProps) => {
-  const formRef = useRef<HTMLFormElement>(null);
+const Form = forwardRef(
+  (
+    { onSubmit, id, children, propogateSubmit = true, ...props }: FormProps,
+    ref: React.Ref<HTMLFormElement>
+  ) => {
+    const backupId = useId();
+    id = id ?? backupId;
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onSubmit();
-  };
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      !propogateSubmit && e.stopPropagation();
+      onSubmit();
+    };
 
-  return (
-    <form ref={formRef} onSubmit={handleSubmit} id={id} {...props}>
-      {children}
-    </form>
-  );
-};
+    return (
+      <form ref={ref} onSubmit={handleSubmit} id={id} {...props}>
+        {children}
+      </form>
+    );
+  }
+);
 
 export default Form;

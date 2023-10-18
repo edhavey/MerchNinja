@@ -29,7 +29,7 @@ const TextField = ({
   return (
     <div
       className={cn([
-        'px-3 py-2 flex border border-amber-400/30 rounded-lg bg-gray-100/20 text-gray-200',
+        'px-3 py-2 flex gap-1 border border-amber-400/30 rounded-lg bg-gray-100/20 text-gray-200',
         'focus-within:border-inherit',
         disabled && 'bg-gray-700/60 border-gray-400/30',
         containerClassName,

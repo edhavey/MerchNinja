@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import TextField from '../../../../components/TextField';
-import { NewProductAction, NewProductSpec } from '../CreateProduct';
 import { AiOutlineClose as DeleteIcon } from 'react-icons/ai';
 import Checkbox from '../../../../components/Checkbox';
 import Button from '../../../../components/Button';
+import { NewProductAction, NewProductSpec } from '@/types/types';
 
 const emptySpecs: [NewProductSpec] = [
   {
@@ -60,7 +60,7 @@ const ProductSpecsSection = ({
   }, [specs, dispatch]);
 
   return (
-    <section className='flex flex-col gap-6'>
+    <section className='flex flex-col gap-6 grow'>
       <h2 className='text-lg text-center text-amber-400/80'>Product Specs</h2>
       <div className='grid grid-cols-[auto_4fr_3fr_auto] gap-4'>
         <div className='subgrid col-span-3 text-center text-gray-400 text-sm'>
@@ -103,7 +103,7 @@ const ProductSpecsSection = ({
       <Button
         color='tertiary'
         size='sm'
-        className='self-end'
+        className='self-end mt-auto'
         onClick={handleNewSpec}
       >
         Add Spec

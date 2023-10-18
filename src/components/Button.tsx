@@ -9,7 +9,7 @@ type ButtonProps = {
 
 const styles = {
   base: [
-    'font-medium border border-transparent',
+    'border border-transparent',
     'focus:outline-none focus:ring-2 focus:ring-offset-2',
     'transition ease-in-out duration-150',
   ],
@@ -46,9 +46,9 @@ const styles = {
     ],
   },
   sizes: {
-    sm: ['text-sm px-2 py-1', 'rounded-md'],
-    md: ['text-base px-4 py-2', 'rounded-md'],
-    lg: ['text-lg px-6 py-3', 'rounded-lg'],
+    sm: ['text-sm px-2 py-1', 'rounded-md font-medium'],
+    md: ['text-base px-4 py-2', 'rounded-md font-bold'],
+    lg: ['text-lg px-6 py-3', 'rounded-lg font-bold'],
   },
 };
 

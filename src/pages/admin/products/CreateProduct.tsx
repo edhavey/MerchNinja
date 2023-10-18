@@ -9,7 +9,6 @@ import {
   Variant,
 } from '../../../types/types';
 import ProductInfoSection from './components/ProductInfoSection';
-import ProductImagesSection from './components/ProductImagesSection';
 import ProductSpecsSection from './components/ProductSpecsSection';
 import ProductVariantsSection from './components/ProductVariantsSection';
 import Button from '../../../components/Button';
@@ -80,35 +79,34 @@ export default function CreateProduct() {
   }, [product]);
 
   return (
-    <div className='min-h-full max-w-screen-xl flex flex-col gap-2 basis-0 grow mx-auto py-6 '>
+    <div className='min-h-full max-w-screen-xl flex flex-col gap-4 basis-0 grow mx-auto p-6'>
       <AdminPageHeader className=''>Create Product</AdminPageHeader>
-      <Panel
-        as={Form}
+      <Form
         id='createProductForm'
         onSubmit={handleCreateProduct}
-        className='bg-gray-900 border-amber-400/30 border rounded-lg p-6 flex flex-col gap-4'
+        className='flex flex-col gap-4'
       >
         {product && (
           <>
-            <div className='grid grid-cols-[1fr,.6fr] gap-20'>
-              <div className='flex flex-col gap-8'>
-                <ProductImagesSection
-                  images={product.images}
-                  dispatch={dispatch}
-                />
-                <ProductSpecsSection
-                  specs={product.specs}
-                  dispatch={dispatch}
-                />
-              </div>
-              <div className='flex flex-col gap-2'>
-                <ProductInfoSection product={product} dispatch={dispatch} />
-              </div>
+            <div className='flex gap-4'>
+              <Panel className='grid grid-cols-[.7fr,1fr] gap-20'>
+                <div className='flex flex-col gap-8'>
+                  <ProductInfoSection product={product} dispatch={dispatch} />
+                </div>
+              </Panel>
+              <Panel>
+                <div className='flex flex-col gap-2 self-stretch'>
+                  <ProductSpecsSection
+                    specs={product.specs}
+                    dispatch={dispatch}
+                  />
+                </div>
+              </Panel>
             </div>
-            <div className='w-full'>
+            <Panel className='w-full'>
               <ProductVariantsSection product={product} />
-            </div>
-            <div className='flex gap-4 ml-auto'>
+            </Panel>
+            <Panel className='flex gap-4 ml-auto'>
               <Button
                 type='submit'
                 form='createProductForm'
@@ -124,10 +122,10 @@ export default function CreateProduct() {
               >
                 Reset Form
               </Button>
-            </div>
+            </Panel>
           </>
         )}
-      </Panel>
+      </Form>
     </div>
   );
 }
