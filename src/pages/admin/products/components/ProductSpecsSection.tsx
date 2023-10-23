@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import TextField from '../../../../components/TextField';
+import TextField from '../../../../components/form/old/TextField';
 import { AiOutlineClose as DeleteIcon } from 'react-icons/ai';
-import Checkbox from '../../../../components/Checkbox';
+import Checkbox from '../../../../components/form/old/Checkbox';
 import Button from '../../../../components/Button';
 import { NewProductAction, NewProductSpec } from '@/types/types';
 
@@ -9,7 +9,6 @@ const emptySpecs: [NewProductSpec] = [
   {
     name: '',
     value: '',
-    unit: '',
     variant: false,
   },
 ];
@@ -32,7 +31,7 @@ const ProductSpecsSection = ({
   const handleNewSpec = () => {
     dispatch({
       type: 'SET_SPECS',
-      payload: [...specs, { name: '', value: '', unit: '', variant: false }],
+      payload: [...specs, { name: '', value: '', variant: false }],
     });
   };
 
@@ -46,7 +45,11 @@ const ProductSpecsSection = ({
   const handleToggleVariant = (i: number) => () => {
     const newSpecs = [...specs];
     const currentSpec = newSpecs[i];
-    newSpecs[i] = { ...currentSpec, variant: !currentSpec.variant, value: '' };
+    newSpecs[i] = {
+      ...currentSpec,
+      variant: !currentSpec.variant,
+      value: null,
+    };
     dispatch({ type: 'SET_SPECS', payload: newSpecs });
   };
 
@@ -61,7 +64,7 @@ const ProductSpecsSection = ({
 
   return (
     <section className='flex flex-col gap-6 grow'>
-      <h2 className='text-lg text-center text-amber-400/80'>Product Specs</h2>
+      <h2 className='text-2xl text-center text-amber-400/80'>Specs</h2>
       <div className='grid grid-cols-[auto_4fr_3fr_auto] gap-4'>
         <div className='subgrid col-span-3 text-center text-gray-400 text-sm'>
           <span className='col-span-1'>Variant?</span>
@@ -77,17 +80,16 @@ const ProductSpecsSection = ({
               />
               <TextField
                 id={i + '-name'}
-                containerClassName='py-1 px-2'
+                girth='sm'
                 onChange={handleSpecChange(i, 'name')}
                 value={spec.name}
               />
               <TextField
                 id={i + '-value'}
                 disabled={spec.variant}
-                className=''
-                containerClassName='py-1 px-2'
+                girth='sm'
                 onChange={handleSpecChange(i, 'value')}
-                value={spec.value}
+                value={spec.value ?? ''}
               />
             </div>
             <button

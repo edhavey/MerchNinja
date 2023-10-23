@@ -1,23 +1,27 @@
 import { useState } from 'react';
 import ProductVariantsElement from './ProductVariantsElement';
 import Modal from '@/components/Modal';
-import { NewProduct, NewProductVariantSpec, Variant } from '@/types/types';
+import {
+  NewProduct,
+  NewProductVariantSpec,
+  NewProductVariant,
+} from '@/types/types';
 import ProductVariantForm from './ProductVariantForm';
 import { AiOutlinePlus as PlusIcon } from 'react-icons/ai';
 import Button from '@/components/Button';
 
 const ProductVariantsSection = ({ product }: { product: NewProduct }) => {
-  const [variants, setVariants] = useState<Variant[]>([]);
-  const [newVariant, setNewVariant] = useState<Variant>({
+  const [variants, setVariants] = useState<NewProductVariant[]>([]);
+  const [newVariant, setNewVariant] = useState<NewProductVariant>({
     price: '',
     quantity: '',
   });
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const variantSpecs = (product?.specs.filter(
+  const variantSpecs = product.specs.filter(
     (spec) => spec.variant
-  ) as unknown) as NewProductVariantSpec[];
+  ) as NewProductVariantSpec[];
 
   const handleNewVariantChange = (key: string, value: string) => {
     if (!newVariant) return;
@@ -32,14 +36,14 @@ const ProductVariantsSection = ({ product }: { product: NewProduct }) => {
     setIsOpen(false);
   };
 
-  const handleRemoveVariant = (variant: Variant) => {
+  const handleRemoveVariant = (variant: NewProductVariant) => {
     const newVariants = variants.filter(
       (currentVariant) => currentVariant !== variant
     );
     setVariants(newVariants);
   };
 
-  const handleEditVariant = (variant: Variant) => {
+  const handleEditVariant = (variant: NewProductVariant) => {
     setNewVariant(variant);
     setIsOpen(true);
   };
@@ -62,13 +66,12 @@ const ProductVariantsSection = ({ product }: { product: NewProduct }) => {
             </ul>
             <Button
               type='button'
-              className='w-fit self-end'
+              className='w-fit self-end mt-4'
+              size='sm'
+              color='tertiary'
               onClick={() => setIsOpen((prev) => !prev)}
             >
-              <span className='flex items-center gap-2'>
-                <PlusIcon className='w-4 h-4' />
-                <p>Add Variant</p>
-              </span>
+              Add Variant
             </Button>
           </>
         ) : (
@@ -103,7 +106,7 @@ const ProductVariantModal = ({
 }: {
   onClose: () => void;
   variantSpecs: NewProductVariantSpec[];
-  newVariant: Variant;
+  newVariant: NewProductVariant;
   handleNewVariantChange: (key: string, value: string) => void;
   handleCreateNewVariant: () => void;
 }) => {

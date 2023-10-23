@@ -1,8 +1,8 @@
-import FormControl from '@/components/FormControl';
+import FormControl from '@/components/form/old/FormControl';
 import BrandSelectInput from './BrandSelectInput';
 import CategorySelectInput from './CategorySelectInput';
 import { NewProduct, NewProductAction } from '@/types/types';
-import TextField from '@/components/TextField';
+import TextField from '@/components/form/old/TextField';
 
 type ProductDetailsPanelProps = {
   product: NewProduct;
@@ -15,7 +15,7 @@ const ProductDetailsPanel = ({
 }: ProductDetailsPanelProps) => {
   return (
     <section className='flex flex-col gap-2'>
-      <h2 className='text-lg text-center text-amber-400/80'>Product Details</h2>
+      <h2 className='text-2xl text-center text-amber-400/80'>Details</h2>
       <FormControl className='' label='Product Name' htmlFor='nameInput'>
         <TextField
           id='nameInput'

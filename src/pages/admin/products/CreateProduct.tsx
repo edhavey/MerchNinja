@@ -6,13 +6,13 @@ import {
   NewProduct,
   NewProductAction,
   NewProductSpec,
-  Variant,
+  NewProductVariant,
 } from '../../../types/types';
 import ProductInfoSection from './components/ProductInfoSection';
 import ProductSpecsSection from './components/ProductSpecsSection';
 import ProductVariantsSection from './components/ProductVariantsSection';
 import Button from '../../../components/Button';
-import Form from '../../../components/Form';
+import Form from '../../../components/form/old/Form';
 import Panel from '../components/Panel';
 
 const emptyProduct: NewProduct = {
@@ -24,7 +24,7 @@ const emptyProduct: NewProduct = {
   category: null,
   images: [] as File[],
   specs: [] as NewProductSpec[],
-  variants: [] as Variant[],
+  variants: [] as NewProductVariant[],
 };
 
 function reducer(
@@ -50,24 +50,26 @@ function reducer(
     case 'SET_SPECS':
       return { ...state, specs: action.payload as NewProductSpec[] };
     case 'SET_VARIANTS':
-      return { ...state, variants: action.payload as Variant[] };
+      return { ...state, variants: action.payload as NewProductVariant[] };
     case 'SET_PRODUCT':
       return { ...(action.payload as NewProduct) };
+    case 'RESET':
+      return { ...emptyProduct };
     default:
       throw new Error(`Invalid action: ${action}`);
   }
 }
 
-function loadCachedProduct() {
-  const cachedProduct = sessionStorage.getItem('newProduct');
-  if (cachedProduct) {
-    return JSON.parse(cachedProduct);
+function initializer() {
+  const product = sessionStorage.getItem('newProduct');
+  if (product) {
+    return JSON.parse(product);
   }
   return emptyProduct;
 }
 
 export default function CreateProduct() {
-  const [product, dispatch] = useReducer(reducer, null, loadCachedProduct);
+  const [product, dispatch] = useReducer(reducer, null, initializer);
 
   function handleCreateProduct() {
     //TODO create new product
@@ -76,6 +78,7 @@ export default function CreateProduct() {
 
   useEffect(() => {
     sessionStorage.setItem('newProduct', JSON.stringify(product));
+    console.log('Product updated', product);
   }, [product]);
 
   return (
@@ -89,12 +92,10 @@ export default function CreateProduct() {
         {product && (
           <>
             <div className='flex gap-4'>
-              <Panel className='grid grid-cols-[.7fr,1fr] gap-20'>
-                <div className='flex flex-col gap-8'>
-                  <ProductInfoSection product={product} dispatch={dispatch} />
-                </div>
+              <Panel className='flex flex-col items-stretch gap-8 basis-0 grow'>
+                <ProductInfoSection product={product} dispatch={dispatch} />
               </Panel>
-              <Panel>
+              <Panel className='basis-0 grow'>
                 <div className='flex flex-col gap-2 self-stretch'>
                   <ProductSpecsSection
                     specs={product.specs}
@@ -116,9 +117,7 @@ export default function CreateProduct() {
               </Button>
               <Button
                 color='secondary'
-                onClick={() =>
-                  dispatch({ type: 'SET_PRODUCT', payload: emptyProduct })
-                }
+                onClick={() => dispatch({ type: 'RESET' })}
               >
                 Reset Form
               </Button>

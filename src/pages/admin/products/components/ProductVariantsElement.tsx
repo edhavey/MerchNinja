@@ -1,19 +1,18 @@
-import { Variant } from '@/types/types';
+import { NewProductVariant } from '@/types/types';
 import { capitalize } from '../../../../utils/helpers';
 import {
   AiFillEdit as EditIcon,
   AiOutlineClose as DeleteIcon,
 } from 'react-icons/ai';
-import Button from '@/components/Button';
 
 const ProductVariantsElement = ({
   variant,
   removeVariant,
   editVariant,
 }: {
-  variant: Variant;
-  removeVariant: (variant: Variant) => void;
-  editVariant: (variant: Variant) => void;
+  variant: NewProductVariant;
+  removeVariant: (variant: NewProductVariant) => void;
+  editVariant: (variant: NewProductVariant) => void;
 }) => {
   function formatValue(value: string | number, key: string) {
     value = value.toString();

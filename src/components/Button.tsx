@@ -1,8 +1,8 @@
-import cn from '../utils/cn';
+import cn from '@/utils/cn';
 
 type ButtonProps = {
-  color?: keyof typeof styles['colors'];
-  size?: keyof typeof styles['sizes'];
+  color?: keyof (typeof styles)['colors'];
+  size?: keyof (typeof styles)['sizes'];
   children: React.ReactNode;
   className?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;

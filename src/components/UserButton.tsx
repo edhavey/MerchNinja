@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../context/user/useAuth';
 import { Link } from 'react-router-dom';
-import { User } from '../types/models.types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserAstronaut } from '@fortawesome/free-solid-svg-icons';
 

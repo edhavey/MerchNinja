@@ -1,15 +1,14 @@
 import { useRef, useState } from 'react';
-import cn from '../utils/cn';
-import { InputGroup, InputOption } from '../types/types';
+import cn from '../../../utils/cn';
 
 type SelectInputProps = {
   label?: string;
-  options?: InputGroup[] | InputOption[];
+  options?: { name: string; value: string | number }[];
   className?: string;
   value: string | null;
   onChange: (value: string) => void;
-  headerOption?: InputOption;
-  tailOption?: InputOption;
+  headerOption?: { name: string; value: string | number };
+  tailOption?: { name: string; value: string | number };
   disabled?: boolean;
 };
 
@@ -35,9 +34,7 @@ const SelectInput = ({
     setIsOpen(false);
   };
 
-  const selectedOption = options.find(
-    (option) => (option as InputOption).value === value
-  );
+  const currentOption = options.find((option) => option.value === value);
 
   return (
     <div
@@ -53,9 +50,8 @@ const SelectInput = ({
         aria-labelledby='customSelectLabel'
         ref={selectButtonRef}
       >
-        {selectedOption?.name ?? 'Select an option'}
+        {currentOption?.name || 'Select'}
       </button>
-      {/* Dropdown list */}
       {isOpen && (
         <DropdownMenu
           options={options}
@@ -74,7 +70,7 @@ const LiOption = ({
   handleItemClick,
   className = '',
 }: {
-  option: InputOption;
+  option: { name: string; value: string | number };
   handleItemClick: (value: string) => void;
   className?: string;
 }) => {
@@ -97,10 +93,10 @@ const DropdownMenu = ({
   tailOption,
   setIsOpen,
 }: {
-  options: InputOption[] | InputGroup[];
+  options: { name: string; value: string | number }[];
   handleItemClick: (value: string) => void;
-  headerOption?: InputOption;
-  tailOption?: InputOption;
+  headerOption?: { name: string; value: string | number };
+  tailOption?: { name: string; value: string | number };
   setIsOpen: (isOpen: boolean) => void;
 }) => {
   const handleOutsideClick = (
@@ -125,7 +121,7 @@ const DropdownMenu = ({
               <li key={item.name} className='px-4 py-2'>
                 <h3 className='text-gray-400 text-sm'>{item.name}</h3>
                 <ul className='ml-2'>
-                  {(item.options as InputOption[]).map((option) => (
+                  {(item.options as SelectOption[]).map((option) => (
                     <LiOption
                       key={option.value}
                       option={option}
@@ -138,8 +134,8 @@ const DropdownMenu = ({
           }
           return (
             <LiOption
-              key={(item as InputOption).value}
-              option={item as InputOption}
+              key={(item as SelectOption).value}
+              option={item as SelectOption}
               handleItemClick={handleItemClick}
             />
           );

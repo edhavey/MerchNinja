@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import SelectInput from '../../../../components/SelectInput';
-import { Brand, InputOption } from '../../../../types/types';
+import SelectInput from '../../../../components/form/old/SelectInput';
+import { Brand, SelectOption } from '../../../../types/types';
 import useAdminStore from '../../../../context/admin/useAdminStore';
 import Modal from '../../../../components/Modal';
-import TextField from '../../../../components/TextField';
+import TextField from '../../../../components/form/old/TextField';
 import Button from '../../../../components/Button';
 
 type BrandSelectInputProps = {
@@ -67,7 +67,7 @@ const BrandSelectInput = ({
           brands.map(({ id, name }) => ({
             value: '' + id,
             name,
-          })) as InputOption[]
+          })) as SelectOption[]
         }
         value={selectedBrand?.name || null}
         label='Product Brand'

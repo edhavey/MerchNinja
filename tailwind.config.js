@@ -6,6 +6,14 @@ export default {
       fontFamily: {
         primary: ["Montserrat", "sans-serif"],
       },
+      colors: {
+        primary: {
+          100: "#F8EDD2",
+          DEFAULT: "#DAA520",
+          500: "#DAA520",
+          900: "#41310A"
+        },
+      },
       keyframes: {
         'spin-opposite': {
           '0%': { transform: 'rotate(0deg)' },

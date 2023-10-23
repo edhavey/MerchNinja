@@ -1,4 +1,4 @@
-import cn from '../utils/cn';
+import cn from '../../../utils/cn';
 
 const layoutClasses = {
   vertical: 'flex flex-col gap-1',

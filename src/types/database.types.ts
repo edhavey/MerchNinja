@@ -533,8 +533,9 @@ export interface Database {
           deleted_at: string | null
           id: number
           image_urls: string[]
-          price_offset: number
+          price: number
           product_id: string
+          specs: Json | null
           updated_at: string
         }
         Insert: {
@@ -542,8 +543,9 @@ export interface Database {
           deleted_at?: string | null
           id?: never
           image_urls: string[]
-          price_offset?: number
+          price?: number
           product_id: string
+          specs?: Json | null
           updated_at?: string
         }
         Update: {
@@ -551,8 +553,9 @@ export interface Database {
           deleted_at?: string | null
           id?: never
           image_urls?: string[]
-          price_offset?: number
+          price?: number
           product_id?: string
+          specs?: Json | null
           updated_at?: string
         }
         Relationships: [
@@ -745,27 +748,27 @@ export interface Database {
         }
         Relationships: []
       }
-      variation_specs: {
+      variant_specs: {
         Row: {
           created_at: string
           spec_id: number
           updated_at: string
           value: string
-          variation_id: number
+          variant_id: number
         }
         Insert: {
           created_at?: string
           spec_id: number
           updated_at?: string
           value: string
-          variation_id: number
+          variant_id: number
         }
         Update: {
           created_at?: string
           spec_id?: number
           updated_at?: string
           value?: string
-          variation_id?: number
+          variant_id?: number
         }
         Relationships: [
           {
@@ -776,7 +779,7 @@ export interface Database {
           },
           {
             foreignKeyName: "variation_specs_variation_id_fkey"
-            columns: ["variation_id"]
+            columns: ["variant_id"]
             referencedRelation: "product_variants"
             referencedColumns: ["id"]
           }
@@ -843,17 +846,47 @@ export interface Database {
         }
         Returns: undefined
       }
-      fn_create_product_variant: {
+      fn_create_product_variant:
+        | {
+            Args: {
+              p_product_id: string
+              p_price_offset: number
+              p_stock_quantity: number
+              p_image_urls: string[]
+              p_attributes: Json
+            }
+            Returns: undefined
+          }
+        | {
+            Args: {
+              p_product_id: string
+              p_price: number
+              p_image_urls: string[]
+              p_specs: Json
+            }
+            Returns: number
+          }
+      fn_create_product_variant_specs: {
         Args: {
-          p_product_id: string
-          p_price_offset: number
-          p_stock_quantity: number
-          p_image_urls: string[]
-          p_attributes: Json
+          p_variant_id: number
+          p_specs: Json
         }
         Returns: undefined
       }
-      fn_create_single_category:
+      fn_find_or_create_brand: {
+        Args: {
+          p_name: string
+        }
+        Returns: number
+      }
+      fn_find_or_create_category:
+        | {
+            Args: {
+              p_cat_name: string
+              p_parent_name: string
+            }
+            Returns: number
+          }
         | {
             Args: {
               p_cat_name: string
@@ -861,36 +894,11 @@ export interface Database {
             }
             Returns: number
           }
-        | {
-            Args: {
-              p_cat_name: string
-            }
-            Returns: number
-          }
-      fn_find_or_create_brand: {
-        Args: {
-          p_name: string
-        }
-        Returns: number
-      }
-      fn_find_or_create_category: {
-        Args: {
-          p_cat_name: string
-          p_parent_name: string
-        }
-        Returns: number
-      }
       fn_find_or_create_tag: {
         Args: {
           p_tag_name: string
         }
         Returns: number
-      }
-      fn_get_all_product_attributes: {
-        Args: {
-          p_product_id: string
-        }
-        Returns: Json
       }
       fn_get_category_chain: {
         Args: {
@@ -926,17 +934,17 @@ export interface Database {
         }
         Returns: Json
       }
-      fn_get_product_variant_attributes: {
-        Args: {
-          p_variant_id: number
-        }
-        Returns: Json
-      }
       fn_get_product_variant_rating: {
         Args: {
           p_variant_id: number
         }
         Returns: number
+      }
+      fn_get_product_variant_specs: {
+        Args: {
+          p_variant_id: number
+        }
+        Returns: Json
       }
       fn_get_to_many_foreign_tables_array: {
         Args: {

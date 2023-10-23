@@ -1,5 +1,5 @@
 import { NewProductAction } from '@/types/types';
-import ImageUploadInput from '../../../../components/ImageUploadInput';
+import ImageUploadInput from '../../../../components/form/old/ImageUploadInput';
 
 const ProductImagesSection = ({
   dispatch,

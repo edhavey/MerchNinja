@@ -4,13 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  * {
+    font-family: 'Montserrat', sans-serif;
+  }
+}
+
 @layer utilities {
   .subgrid {
     display: grid;
     grid-template-columns: subgrid;
-  }
-
-  * {
-    font-family: 'Montserrat', sans-serif;
   }
 }

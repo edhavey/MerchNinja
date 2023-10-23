@@ -1,19 +1,15 @@
-import { HTMLProps } from 'react';
-
-export type InputOption = {
-  value: string | null;
-  name: string;
-  [key: string]: string | null;
-};
-export type InputGroup = {
-  name: string;
-  options: InputOption[];
-};
+import React, { HTMLProps } from 'react';
 
 export type Category = {
-  id: string;
+  id: number;
   name: string;
-  children: Category[] | null;
+  parentId: number | null;
+};
+
+export type ParentCategory = {
+  id: number;
+  name: string;
+  children: Category[];
 };
 
 export type Brand = {
@@ -37,13 +33,12 @@ export type NewProduct = {
   category: Category | null;
   images: File[];
   specs: NewProductSpec[];
-  variants: Variant[];
+  variants: NewProductVariant[];
 };
 
 export type NewProductSpec = {
   name: string;
-  value: string;
-  unit: string;
+  value: string | null;
   variant: boolean;
 };
 
@@ -60,11 +55,21 @@ export type NewProductAction =
   | { type: 'SET_CATEGORY'; payload: Category }
   | { type: 'SET_IMAGES'; payload: File[] }
   | { type: 'SET_SPECS'; payload: NewProductSpec[] }
-  | { type: 'SET_VARIANTS'; payload: Variant[] }
-  | { type: 'SET_PRODUCT'; payload: NewProduct };
+  | { type: 'SET_VARIANTS'; payload: NewProductVariant[] }
+  | { type: 'SET_PRODUCT'; payload: NewProduct }
+  | { type: 'RESET'; payload?: undefined };
 
-export type Variant = {
+export type NewProductVariant = {
   price: string;
   quantity: string;
   [key: string]: string | number;
 };
+
+export type UUID = string;
+
+export type NewCategory = Omit<Category, 'id'>;
+
+export type HTMLFormField =
+  | HTMLInputElement
+  | HTMLTextAreaElement
+  | HTMLSelectElement;
