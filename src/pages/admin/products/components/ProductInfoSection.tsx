@@ -1,47 +1,22 @@
 import FormControl from '@/components/form/old/FormControl';
 import BrandSelectInput from './BrandSelectInput';
+import TextInput from '@/components/form/TextInput';
 import CategorySelectInput from './CategorySelectInput';
-import { NewProduct, NewProductAction } from '@/types/types';
-import TextField from '@/components/form/old/TextField';
 
-type ProductDetailsPanelProps = {
-  product: NewProduct;
-  dispatch: ({ type, payload }: NewProductAction) => void;
-};
-
-const ProductDetailsPanel = ({
-  product,
-  dispatch,
-}: ProductDetailsPanelProps) => {
+const ProductInfoSection = () => {
   return (
     <section className='flex flex-col gap-2'>
       <h2 className='text-2xl text-center text-amber-400/80'>Details</h2>
-      <FormControl className='' label='Product Name' htmlFor='nameInput'>
-        <TextField
-          id='nameInput'
-          value={product.name}
-          onChange={(value: string) =>
-            dispatch({ type: 'SET_NAME', payload: value })
-          }
-        />
+      <FormControl label='Product Name'>
+        <TextInput id='nameInput' name='name' />
       </FormControl>
       <FormControl label='Brand'>
-        <BrandSelectInput
-          selectedBrand={product.brand}
-          onBrandChange={(value) =>
-            dispatch({ type: 'SET_BRAND', payload: value })
-          }
-        />
+        <BrandSelectInput id='brandSelect' />
       </FormControl>
       <FormControl label='Category'>
-        <CategorySelectInput
-          selectedCategory={product.category}
-          onCategoryChange={(value) =>
-            dispatch({ type: 'SET_CATEGORY', payload: value })
-          }
-        />
+        <CategorySelectInput id='categorySelect' />
       </FormControl>
-      <FormControl label='Description' htmlFor='descriptionInput'>
+      {/* <FormControl label='Description'>
         <textarea
           id='descriptionInput'
           className='bg-gray-100/20 p-2 border border-amber-400/30 rounded-md'
@@ -54,7 +29,7 @@ const ProductDetailsPanel = ({
           }
           rows={5}
         />
-      </FormControl>
+      </FormControl> */}
     </section>
   );
 };
@@ -88,7 +63,7 @@ const validatePrice = (value: string, prevPrice: string): string => {
 
 <div className='flex gap-4'>
   <FormControl label='Price' htmlFor='priceInput'>
-    <TextField
+    <TextInput
       id='priceInput'
       className='text-right'
       value={product.price}
@@ -100,7 +75,7 @@ const validatePrice = (value: string, prevPrice: string): string => {
     />
   </FormControl>
   <FormControl label='Quantity' htmlFor='quantityInput'>
-    <TextField
+    <TextInput
       id='quantityInput'
       className='text-right'
       value={'' + product.stock}
@@ -113,4 +88,4 @@ const validatePrice = (value: string, prevPrice: string): string => {
 </div>
 */
 
-export default ProductDetailsPanel;
+export default ProductInfoSection;

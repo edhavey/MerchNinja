@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import TextField from '../../../../components/form/old/TextField';
+import TextField from '@/components/form/old/TextField';
 import { AiOutlineClose as DeleteIcon } from 'react-icons/ai';
-import Checkbox from '../../../../components/form/old/Checkbox';
-import Button from '../../../../components/Button';
+import Checkbox from '@/components/form/checkbox/Checkbox';
+import Button from '@/components/Button';
 import { NewProductAction, NewProductSpec } from '@/types/types';
 
 const emptySpecs: [NewProductSpec] = [
@@ -20,13 +20,12 @@ const ProductSpecsSection = ({
   specs: NewProductSpec[];
   dispatch: React.Dispatch<NewProductAction>;
 }) => {
-  const handleSpecChange = (i: number, specProperty: string) => (
-    value: string
-  ) => {
-    const newSpecs = [...specs];
-    newSpecs[i] = { ...newSpecs[i], [specProperty]: value };
-    dispatch({ type: 'SET_SPECS', payload: newSpecs });
-  };
+  const handleSpecChange =
+    (i: number, specProperty: string) => (value: string) => {
+      const newSpecs = [...specs];
+      newSpecs[i] = { ...newSpecs[i], [specProperty]: value };
+      dispatch({ type: 'SET_SPECS', payload: newSpecs });
+    };
 
   const handleNewSpec = () => {
     dispatch({
@@ -74,10 +73,7 @@ const ProductSpecsSection = ({
         {specs.map((spec, i) => (
           <div className='gap-4 subgrid col-span-full align-middle' key={i}>
             <div className='gap-8 subgrid col-span-3'>
-              <Checkbox
-                isChecked={spec.variant}
-                handleCheckboxToggle={handleToggleVariant(i)}
-              />
+              <Checkbox id={i + '-variant'} value={'' + i} name={'specs'} />
               <TextField
                 id={i + '-name'}
                 girth='sm'
@@ -115,60 +111,3 @@ const ProductSpecsSection = ({
 };
 
 export default ProductSpecsSection;
-
-/*
-      <table className='table-auto'>
-        <thead>
-          <tr>
-            <th className='font-normal text-gray-400 text-sm'>Name</th>
-            <th className='font-normal text-gray-400 text-sm'>Value</th>
-            <th className='font-normal text-gray-400 text-sm'>Unit</th>
-            <th className='font-normal text-gray-400 text-sm'></th>
-          </tr>
-        </thead>
-        <tbody>
-          {specs.map((spec, i) => (
-            <tr key={i}>
-              <td>
-                <TextField
-                  value={spec.name}
-                  onChange={handleSpecChange(i + '', 'name')}
-                />
-              </td>
-              <td>
-                <TextField
-                  value={spec.value}
-                  onChange={handleSpecChange(i + '', 'value')}
-                />
-              </td>
-              <td>
-                <TextField
-                  value={spec.unit}
-                  onChange={handleSpecChange(i + '', 'unit')}
-                />
-              </td>
-              <td>
-                <button
-                  className='text-xl hover:text-amber-400/80'
-                  onClick={() => handleRemoveSpec(i + '')}
-                >
-                  <DeleteIcon />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-*/
-
-/* <ul className='flex flex-col gap-2'>
-        {specs.map((spec, i) => (
-          <Spec
-            key={i}
-            id={`spec${i}`}
-            spec={spec}
-            handleSpecChange={handleSpecChange}
-            handleRemoveSpec={handleRemoveSpec}
-          />
-        ))}
-      </ul> */

@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import cn from '../../../utils/cn';
 
 const layoutClasses = {
@@ -8,29 +9,29 @@ const layoutClasses = {
 const FormControl = ({
   label,
   children,
-  htmlFor,
   className = '',
   labelClassName = '',
   layout = 'vertical',
 }: {
   label?: string;
   children: React.ReactNode;
-  htmlFor?: string;
   className?: string;
   labelClassName?: string;
   layout?: 'vertical' | 'horizontal';
 }) => {
+  const labelRef = useRef<HTMLLabelElement>(null);
+
   const classes = cn(layoutClasses[layout] ?? '', className);
 
   return (
     <div className={classes}>
       <label
+        ref={labelRef}
         className={cn('text-gray-400 text-sm', labelClassName)}
-        htmlFor={htmlFor}
       >
         {label}
+        {children}
       </label>
-      {children}
     </div>
   );
 };

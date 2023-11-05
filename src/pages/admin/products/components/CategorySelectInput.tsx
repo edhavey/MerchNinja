@@ -1,20 +1,12 @@
-import SelectInput from '../../../../components/form/old/SelectInput';
-import { Category, NewCategory, ParentCategory } from '@/types/types';
+import { NewCategory, ParentCategory } from '@/types/types';
 import useAdminStore from '../../../../context/admin/useAdminStore';
 import React, { useEffect, useState } from 'react';
-import Modal from '../../../../components/Modal';
 import CreateCategoryForm from './CreateCategoryForm';
 import Button from '@/components/Button';
+import Modal from '@/components/overlay/Modal';
+import Select from '@/components/form/Select';
 
-type CategorySelectInputProps = {
-  selectedCategory: Category | null;
-  onCategoryChange: (category: Category) => void;
-};
-
-const CategorySelectInput = ({
-  selectedCategory,
-  onCategoryChange,
-}: CategorySelectInputProps) => {
+const CategorySelectInput = ({ id }: { id?: string }) => {
   const [categories, setCategories] = useState<ParentCategory[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [newCategory, setNewCategory] = useState<NewCategory>({
@@ -24,32 +16,16 @@ const CategorySelectInput = ({
 
   const { getAllCategories } = useAdminStore();
 
-  const categoryOptions: React.HTMLAttributes<
-    HTMLOptionElement
-  >[] = categories.map((category: ParentCategory) => ({
-    name: category.name,
-    value: '' + category.id,
-    options:
-      category.children?.map((child) => ({
-        name: child.name,
-        value: '' + child.id,
-      })) || [],
-  })) as React.HTMLAttributes<HTMLOptionElement>[];
-
-  const handleCategoryChange = (value: string) => {
-    if (value === '__create') {
-      setIsOpen(true);
-      return;
-    }
-
-    const category: Category | undefined = categories
-      .find((category) =>
-        category.children?.some((child) => '' + child.id === value)
-      )
-      ?.children?.find((child) => '' + child.id === value);
-
-    category && onCategoryChange(category);
-  };
+  const categoryOptions =
+    categories.map((category: ParentCategory) => ({
+      label: category.name,
+      value: '' + category.id,
+      options:
+        category.children?.map((child) => ({
+          label: child.name,
+          value: '' + child.id,
+        })) || [],
+    })) || [];
 
   const handleNewCategory = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -65,14 +41,7 @@ const CategorySelectInput = ({
 
   return (
     <>
-      <SelectInput
-        options={categoryOptions}
-        value={selectedCategory?.name || null}
-        label='Category'
-        headerOption={{ name: 'Select Category', value: '' }}
-        tailOption={{ name: 'Create Category', value: '__create' }}
-        onChange={handleCategoryChange}
-      />
+      <Select id={id} name='category' options={categoryOptions} />
       <CategoryModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
@@ -103,8 +72,9 @@ const CategoryModal = ({
   return (
     <Modal
       className='flex flex-col gap-4'
-      open={true}
-      onClose={() => setIsOpen(false)}
+      open={isOpen}
+      id='modal'
+      closeModal={() => setIsOpen(false)}
     >
       <CreateCategoryForm
         handleNewCategory={handleNewCategory}

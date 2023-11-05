@@ -73,3 +73,8 @@ export type HTMLFormField =
   | HTMLInputElement
   | HTMLTextAreaElement
   | HTMLSelectElement;
+
+export type SelectOption = {
+  label: string;
+  value: string | number;
+};

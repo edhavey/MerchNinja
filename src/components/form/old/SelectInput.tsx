@@ -3,7 +3,11 @@ import cn from '../../../utils/cn';
 
 type SelectInputProps = {
   label?: string;
-  options?: { name: string; value: string | number }[];
+  options?: {
+    name: string;
+    value: string | number;
+    options?: { name: string; value: string | number }[];
+  }[];
   className?: string;
   value: string | null;
   onChange: (value: string) => void;

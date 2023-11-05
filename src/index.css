@@ -8,6 +8,14 @@
   * {
     font-family: 'Montserrat', sans-serif;
   }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  textarea {
+    @apply text-black;
+  }
 }
 
 @layer utilities {
