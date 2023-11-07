@@ -1,65 +1,37 @@
-import { useEffect } from 'react';
-import TextField from '@/components/form/old/TextField';
-import { AiOutlineClose as DeleteIcon } from 'react-icons/ai';
-import Checkbox from '@/components/form/checkbox/Checkbox';
 import Button from '@/components/Button';
-import { NewProductAction, NewProductSpec } from '@/types/types';
+import { NewProductSpec } from '@/types/types';
+import ProductSpecInputs from './ProductSpecInputs';
 
-const emptySpecs: [NewProductSpec] = [
-  {
-    name: '',
-    value: '',
-    variant: false,
-  },
-];
+const emptySpec: NewProductSpec = {
+  name: '',
+  value: '',
+  variant: false,
+};
 
 const ProductSpecsSection = ({
   specs,
-  dispatch,
+  updateSpecs,
 }: {
   specs: NewProductSpec[];
-  dispatch: React.Dispatch<NewProductAction>;
+  updateSpecs: (specs: NewProductSpec[]) => void;
 }) => {
-  const handleSpecChange =
-    (i: number, specProperty: string) => (value: string) => {
-      const newSpecs = [...specs];
-      newSpecs[i] = { ...newSpecs[i], [specProperty]: value };
-      dispatch({ type: 'SET_SPECS', payload: newSpecs });
-    };
-
-  const handleNewSpec = () => {
-    dispatch({
-      type: 'SET_SPECS',
-      payload: [...specs, { name: '', value: '', variant: false }],
-    });
+  const addSpec = () => {
+    updateSpecs([...specs, emptySpec]);
   };
 
-  const handleRemoveSpec = (i: number) => {
-    if (specs.length === 1) return;
-    const newSpecs = [...specs];
-    newSpecs.splice(i, 1);
-    dispatch({ type: 'SET_SPECS', payload: newSpecs });
+  const deleteSpecByName = (specName: string) => {
+    updateSpecs(specs.filter((spec) => spec.name !== specName));
   };
 
-  const handleToggleVariant = (i: number) => () => {
-    const newSpecs = [...specs];
-    const currentSpec = newSpecs[i];
-    newSpecs[i] = {
-      ...currentSpec,
-      variant: !currentSpec.variant,
-      value: null,
-    };
-    dispatch({ type: 'SET_SPECS', payload: newSpecs });
+  const updateSpec = (
+    spec: NewProductSpec,
+    key: string,
+    value: string | boolean
+  ) => {
+    updateSpecs(
+      specs.map((s) => (s.name === spec.name ? { ...s, [key]: value } : s))
+    );
   };
-
-  useEffect(() => {
-    if (specs.length === 0) {
-      dispatch({
-        type: 'SET_SPECS',
-        payload: emptySpecs,
-      });
-    }
-  }, [specs, dispatch]);
 
   return (
     <section className='flex flex-col gap-6 grow'>
@@ -70,39 +42,21 @@ const ProductSpecsSection = ({
           <span className='col-span-1'>Name</span>
           <span className='col-span-1'>Value</span>
         </div>
-        {specs.map((spec, i) => (
-          <div className='gap-4 subgrid col-span-full align-middle' key={i}>
-            <div className='gap-8 subgrid col-span-3'>
-              <Checkbox id={i + '-variant'} value={'' + i} name={'specs'} />
-              <TextField
-                id={i + '-name'}
-                girth='sm'
-                onChange={handleSpecChange(i, 'name')}
-                value={spec.name}
-              />
-              <TextField
-                id={i + '-value'}
-                disabled={spec.variant}
-                girth='sm'
-                onChange={handleSpecChange(i, 'value')}
-                value={spec.value ?? ''}
-              />
-            </div>
-            <button
-              className='text-xl text-gray-400/50 hover:text-amber-400/80 disabled:text-gray-400/20'
-              disabled={specs.length === 1}
-              onClick={() => handleRemoveSpec(i)}
-            >
-              <DeleteIcon />
-            </button>
-          </div>
+        {specs.map((spec) => (
+          <ProductSpecInputs
+            id={spec.name}
+            updateSpec={updateSpec}
+            deleteSpec={deleteSpecByName}
+            deleteDisabled={specs.length === 1}
+            spec={spec}
+          />
         ))}
       </div>
       <Button
         color='tertiary'
         size='sm'
         className='self-end mt-auto'
-        onClick={handleNewSpec}
+        onClick={addSpec}
       >
         Add Spec
       </Button>

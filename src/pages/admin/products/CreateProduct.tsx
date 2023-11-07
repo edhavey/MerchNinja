@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import AdminPageHeader from '@/pages/admin/components/AdminPageHeader';
 import {
   Brand,
@@ -16,6 +16,11 @@ import Panel from '@/pages/admin/components/Panel';
 import Form from '@/components/form/Form';
 
 export default function CreateProduct() {
+  const [productSpecs, setProductSpecs] = useState<NewProductSpec[]>([]);
+  const [productVariants, setProductVariants] = useState<NewProductVariant[]>(
+    []
+  );
+
   function handleCreateProduct() {
     //TODO create new product
     console.log('Creating new product');
@@ -35,14 +40,14 @@ export default function CreateProduct() {
             <Panel className='flex flex-col items-stretch gap-8 basis-0 grow'>
               <ProductInfoSection />
             </Panel>
-            {/* <Panel className='basis-0 grow'>
+            <Panel className='basis-0 grow'>
               <div className='flex flex-col gap-2 self-stretch'>
                 <ProductSpecsSection
-                  specs={product.specs}
-                  dispatch={dispatch}
+                  specs={productSpecs}
+                  updateSpecs={setProductSpecs}
                 />
               </div>
-            </Panel> */}
+            </Panel>
           </div>
           {/* <Panel className='w-full'>
             <ProductVariantsSection product={product} />

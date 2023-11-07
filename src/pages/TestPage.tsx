@@ -26,14 +26,19 @@ const TestPage = () => {
     <Page className='bg-gray-800 flex flex-col gap-8 text-white justify-center items-center'>
       <h1>Test Page</h1>
       <div>
-        <Form onSubmit={onSubmit} className='flex flex-col gap-4'>
+        <Form devtools onSubmit={onSubmit} className='flex flex-col gap-4'>
           {true && <TextInput name='textTest' />}
           {true && <NumberInput name='numberTest' />}
           {true && <PriceInput name='priceTest' />}
           {true && <Select options={SELECT_OPTIONS} name='selectTest' />}
           {true && (
-            <div>
-              <Checkbox value='val1' name='textCheckbox1' label='CB Test 1' />
+            <div className='gap-y-2 grid grid-cols-[1fr,_auto] group/grid'>
+              <Checkbox
+                value='val1'
+                name='textCheckbox1'
+                label='CB Test 1'
+                className='group/grid:subgrid group/grid:col-span-2'
+              />
               <Checkbox
                 value='val2'
                 name='textCheckbox1'
@@ -43,7 +48,7 @@ const TestPage = () => {
             </div>
           )}
           {true && <Textarea name='textareaTest' />}
-          {/* {false && <Switch name='switchTest' />} */}
+          {true && <Switch name='switchTest' />}
           <Button type='submit'>Submit</Button>
         </Form>
       </div>
